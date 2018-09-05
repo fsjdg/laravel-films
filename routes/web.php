@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/films/create', 'FilmsController@create')
+    ->middleware('auth');
+
+Route::post('/films/add', 'FilmsController@add');
