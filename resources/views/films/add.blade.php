@@ -62,10 +62,12 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group genres">
             <label>Genres</label>
             <input type="text" name="genres[]" class="form-control" required>
+
         </div>
+        <a href="" class="add_genres">Add new Genre</a>
 
         <div class="form-group">
             <label>Photo</label>
@@ -75,6 +77,31 @@
         <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
 
     </form>
+
+@endsection
+
+@section('scripts')
+
+    <script>
+
+        $(document).ready(function(){
+            $('.add_genres').click(function(e){
+
+                var $element = $('<div></div>').append('<input type="text" name="genres[]" class="form-control" required>')
+                    .append('<a href="" class="remove"> Remove </a>');
+
+                $element.find('.remove').click(function(){
+                    $(this).parent('div').remove();
+                    return false;
+                });
+
+                $('.genres').append($element);
+                return false;
+
+            });
+        });
+
+    </script>
 
 @endsection
 

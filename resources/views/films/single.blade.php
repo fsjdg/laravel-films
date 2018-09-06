@@ -60,23 +60,24 @@
                 <button type="submit" class="btn btn-primary">Send</button>
             </form>
         </div>
+        @if( count($film->comments) > 0 )
+            <div class="col-md-12">
 
-        <div class="col-md-12">
+                <h1 class="my-4">{{ __("What other people think...") }}</h1>
 
-            <h1 class="my-4">{{ __("What other people think...") }}</h1>
+                @foreach( $film->comments as $comment )
 
-            @foreach( $film->comments as $comment )
+                    <article>
+                        <?php $user = App\User::find($comment->user); ?>
+                        <strong>-{{ $user->name }} said:</strong>
+                        <p>{{ $comment->comment }}</p>
+                        <hr>
+                    </article>
 
-                <article>
-                    <?php $user = App\User::find($comment->user); ?>
-                    <strong>-{{ $user->name }}</strong>
-                    <p>{{ $comment->comment }}</p>
+                @endforeach
 
-                </article>
-
-            @endforeach
-
-        </div>
+            </div>
+        @endif
     </div>
     @endauth
 
