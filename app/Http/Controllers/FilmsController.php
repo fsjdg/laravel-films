@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comments;
 use Illuminate\Http\Request;
 use App\Films;
 use App\Genres;
@@ -18,6 +19,15 @@ class FilmsController extends Controller
 
     }
 
+    public function show($slug) {
+
+        $film = Films::where('slug', $slug)->first();
+        $comments = $film->comments;
+
+        return view('films.single', compact('film', 'comments'));
+
+    }
+
     public function create() {
 
         $countries = \App\Countries::all();
@@ -25,21 +35,25 @@ class FilmsController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function add(Request $request) {
 
         $request->validate([
-            'name' => 'required',
-            'description' => 'required',
+            'name'         => 'required',
+            'description'  => 'required',
             'release_date' => 'required|date',
-            'rating' => 'required|numeric|max:5|min:1',
+            'rating'       => 'required|numeric|max:5|min:1',
             'ticket_price' => 'required|numeric',
-            'country' => 'required|numeric',
-            'genres' => 'required',
-            'photo' => 'required|file|mimes:png,jpg,jpeg'
+            'country'      => 'required|numeric',
+            'genres'       => 'required',
+            'photo'        => 'required|file|mimes:png,jpg,jpeg'
         ]);
 
 
-        $photo = Storage::put('public', $request->file('photo'));
+        $photo = Storage::disk('public')->put('', $request->file('photo'));
         $slug  = $this->makeSlug( $request->name );
 
         $film = new Films();
@@ -63,6 +77,25 @@ class FilmsController extends Controller
         }
 
         return redirect('films/create')->with('status', 'Film Saved!');
+
+    }
+
+    public function addComment( Request $request ){
+
+        $request->validate([
+            'comment' => 'required'
+        ]);
+
+        $user = \Auth::user();
+        $film = Films::find($request->film);
+        $comment = new Comments();
+
+        $comment->user = $user->id;
+        $comment->comment = $request->comment;
+
+        $film->comments()->save($comment);
+
+        return redirect("films/{$film->slug}")->with('status', 'Comment Added!');
 
     }
 

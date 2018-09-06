@@ -26,7 +26,7 @@ class Films extends Model
     ];
 
     function comments() {
-        return $this->hasMany(Comments::class);
+        return $this->hasMany('App\Comments', 'film');
     }
 
     function countries() {
@@ -34,6 +34,18 @@ class Films extends Model
     }
 
     function genres() {
-        return $this->hasMany(App\Genres);
+        return $this->hasMany('App\Genres', 'film');
+    }
+
+    public function fancyGenres () {
+
+        $genres = array();
+
+        foreach ( $this->genres as $item ) {
+            $genres[] = $item->genre;
+        }
+
+        return join(", ", $genres);
+
     }
 }

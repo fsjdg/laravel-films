@@ -12,16 +12,24 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    return redirect("/films");
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', function(){
+    return redirect("/films");
+})->name('home');
 
 Route::get('/films', 'FilmsController@index');
 
 Route::get('/films/create', 'FilmsController@create')
     ->middleware('auth');
 
+Route::get('/films/{slug}', 'FilmsController@show');
+
 Route::post('/films/add', 'FilmsController@add');
+
+Route::post('/films/add/comment', 'FilmsController@addComment');
+
