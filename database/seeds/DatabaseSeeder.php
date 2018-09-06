@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CountriesSeeder::class);
         $this->call(FilmsSeeder::class);
         $this->call(GenresSeeder::class);
+        $this->call(CommentsSeeder::class);
     }
 }

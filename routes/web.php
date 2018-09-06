@@ -31,5 +31,6 @@ Route::get('/films/{slug}', 'FilmsController@show');
 
 Route::post('/films/add', 'FilmsController@add');
 
-Route::post('/films/add/comment', 'FilmsController@addComment');
+Route::post('/films/add/comment', 'FilmsController@addComment')
+    ->middleware('auth');
 
