@@ -10,10 +10,17 @@ use Illuminate\Support\Str;
 
 class FilmsController extends Controller
 {
+
+    public function index() {
+
+        $films = Films::with('countries')->get();
+        return view('films.index', compact('films'));
+
+    }
+
     public function create() {
 
         $countries = \App\Countries::all();
-
         return view('films.add', compact('countries'));
 
     }

@@ -26,14 +26,14 @@ class Films extends Model
     ];
 
     function comments() {
-        $this->hasMany(Comments::class);
+        return $this->hasMany(Comments::class);
     }
 
-    function country() {
-        $this->hasOne(Countries::class);
+    function countries() {
+        return $this->belongsTo('App\Countries', 'id');
     }
 
     function genres() {
-        $this->hasMany(App\Genres);
+        return $this->hasMany(App\Genres);
     }
 }
